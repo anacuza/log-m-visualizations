@@ -184,7 +184,9 @@ class Starter(PygameHelper):
                 theta_2 = (y/400)*2*pi
                 
                 #draw the base
+                #draws the moduli space
                 self.screen.fill((255,255,255))
+                #draws on screen, choose color, start pos, end pos, width
                 pygame.draw.line(self.screen, LIGHTGRAY, [100,400],[300, 500],2)
                 pygame.draw.line(self.screen, LIGHTGRAY, [100,300],[200, 500],2)
                 pygame.draw.line(self.screen, LIGHTGRAY, [400,100],[500,300],2)
@@ -194,27 +196,41 @@ class Starter(PygameHelper):
                 pygame.draw.line(self.screen, BLACK, [167,433],[200,500],2)
                 pygame.draw.line(self.screen, BLACK, [400,100],[433, 167],2)
                 pygame.draw.line(self.screen, BLACK, [433,167],[500,200],2)
-                
+
+
+                #draws the origami configuration
+                #1st polygon
                 strc1_w = 900 + 200*cos(pi/6)
                 strc1_h = 400 - 200*sin(pi/6)
                 strc2_w = 700 + 200*cos(pi/6)
                 strc2_h = 400 - 200*sin(pi/6)
                 baseList = [[700,400],[900,400],[strc1_w,strc1_h], [strc2_w,strc2_h]]
                 pygame.draw.polygon(self.screen, GREEN, baseList,2)
-                
+
+                #2nd polygon
                 p21_w = 900 - 200 * cos(theta_2)
                 p21_h = 400 - 200 * sin(theta_2)
                 p22_w = p21_w + 200 * cos(pi/6)
                 p22_h = p21_h - 200 * sin(pi/6)
                 plane2List = [[900,400],[p21_w,p21_h],[p22_w,p22_h],[strc1_w,strc1_h]]
-                pygame.draw.polygon(self.screen, RED, plane2List,2)
-                
+
+
+                #3rd polygon
                 p11_w = 700 + 200 * cos(theta_1)
                 p11_h = 400 - 200 * sin(theta_1)
                 p12_w = p11_w + 200 * cos(pi/6)
                 p12_h = p11_h - 200 * sin(pi/6)
                 plane1List = [[700, 400],[p11_w,p11_h],[p12_w, p12_h],[strc2_w, strc2_h]]
-                pygame.draw.polygon(self.screen, BLUE, plane1List,2)
+
+                #create 2nd and 3rd polygon
+                #if intersect, fill in colors
+                if p21_w < p11_w:
+                    pygame.draw.polygon(self.screen, RED, plane2List, 0)
+                    pygame.draw.polygon(self.screen, BLUE, plane1List, 0)
+                #if not leave the interior blank
+                else:
+                    pygame.draw.polygon(self.screen, RED, plane2List, 2)
+                    pygame.draw.polygon(self.screen, BLUE, plane1List, 2)
      
         else:
             self.screen.fill((255,255,255))
